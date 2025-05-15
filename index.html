@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Name Suggester - 100+ Unique Name Ideas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  :root {
+    --primary-gradient: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+    --secondary-gradient: linear-gradient(135deg, #f79d00 0%, #64f38c 100%);
+    --background: #f9fbfd;
+    --text-color: #222;
+    --card-bg: #fff;
+    --card-shadow: rgba(0, 0, 0, 0.08);
+    --border-radius: 18px;
+    --accent-color: #6a5acd;
+    --accent-hover: #836fff;
+    --transition-speed: 0.3s;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 16px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 700px;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 3.6rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    line-height: 1.1;
+    user-select: none;
+  }
+  header p {
+    font-size: 1.25rem;
+    margin-top: 13px;
+    color: #555;
+    user-select: none;
+  }
+
+  main {
+    background: var(--card-bg);
+    padding: 32px 40px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 16px 40px var(--card-shadow);
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin-bottom: 14px;
+    user-select: none;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 18px 22px;
+    font-size: 1.15rem;
+    border: 2px solid #d6dce5;
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-speed);
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-color);
+  }
+
+  button {
+    margin-top: 28px;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 18px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(90, 120, 220, 0.3);
+    transition: background var(--transition-speed), box-shadow var(--transition-speed);
+    user-select: none;
+  }
+  button:hover,
+  button:focus {
+    background: var(--accent-hover);
+    box-shadow: 0 10px 30px rgba(106, 90, 205, 0.7);
+    outline: none;
+  }
+
+  #suggestions {
+    margin-top: 36px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 2px solid #ced6e0;
+    border-radius: var(--border-radius);
+    background: #fff;
+    padding: 20px;
+    box-shadow: inset 0 0 10px #eef1f5;
+  }
+  #suggestions::-webkit-scrollbar {
+    width: 9px;
+  }
+  #suggestions::-webkit-scrollbar-track {
+    background: #f1f3f7;
+    border-radius: var(--border-radius);
+  }
+  #suggestions::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: var(--border-radius);
+  }
+
+  #suggestions li {
+    background: var(--accent-color);
+    color: white;
+    padding: 13px 18px;
+    margin-bottom: 12px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(106, 90, 205, 0.25);
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--transition-speed);
+  }
+  #suggestions li:hover,
+  #suggestions li:focus {
+    background: var(--accent-hover);
+    outline: none;
+  }
+
+  #suggestions li:active {
+    transform: scale(0.97);
+  }
+
+  footer {
+    margin-top: auto;
+    font-size: 0.9rem;
+    color: #777;
+    padding: 36px 0 0;
+    user-select: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    header h1 {
+      font-size: 2.6rem;
+    }
+    main {
+      padding: 28px 24px;
+    }
+    button {
+      font-size: 1.1rem;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Name Suggester</h1>
+  <p>Enter a keyword and get over 100 unique, creative name suggestions!</p>
+</header>
+<main>
+  <label for="keywordInput">Keyword or Theme</label>
+  <input id="keywordInput" type="text" placeholder="e.g. Star, Tech, Green" aria-label="Keyword or theme input" />
+  <button id="generateBtn" aria-label="Generate name suggestions">Generate Names</button>
+  <ul id="suggestions" aria-live="polite" aria-atomic="true" tabindex="0" aria-label="Generated name suggestions"></ul>
+</main>
+<footer>
+  &copy; 2024 Stylish Name Suggester &mdash; Created for creative minds
+</footer>
+
+<script>
+  const generateBtn = document.getElementById('generateBtn');
+  const keywordInput = document.getElementById('keywordInput');
+  const suggestionsList = document.getElementById('suggestions');
+
+  // Expanded prefix, suffix, connector arrays to generate many names
+  const prefixes = [
+    'Ultra', 'Super', 'Mega', 'Hyper', 'Eco', 'Neo', 'Pro', 'Smart', 'Bright', 'Sky',
+    'Star', 'Green', 'Blue', 'Red', 'Quantum', 'Alpha', 'Prime', 'Next', 'Future',
+    'Evo', 'Max', 'Turbo', 'Cyber', 'Nano', 'Aero', 'Zoom', 'Solar', 'Luna', 'Nova',
+    'Titan', 'Vortex', 'Pulse', 'Crystal', 'Shadow', 'Flash', 'Storm', 'Blaze', 'Fusion',
+    'Glide', 'Spark', 'Radiant', 'Echo', 'Nimbus', 'Drift', 'Volt', 'Axis', 'Nimbus',
+    'Magnet', 'Ion', 'Cipher', 'Zen', 'Vivid', 'Polar', 'Tide', 'Glitch', 'Orbit',
+  ];
+
+  const suffixes = [
+    'ify', 'ly', 'ster', 'matic', 'topia', 'verse', 'gen', 'it', 'scape', 'zone',
+    'works', 'labs', 'soft', 'craft', 'base', 'wave', 'pulse', 'loop', 'forge', 'haus',
+    'edge', 'cube', 'flux', 'nest', 'rush', 'beam', 'core', 'stack', 'grid', 'path',
+    'spark', 'trend', 'vault', 'harbor', 'spring', 'drive', 'shift', 'trail', 'dock',
+    'lyze', 'tron', 'byte', 'net', 'plex', 'dock', 'morph', 'burst', 'flash', 'drone',
+  ];
+
+  const connectors = ['-', '', '_', '.'];
+
+  // Generate a large number of unique names based on keyword
+  function generateNames(keyword) {
+    keyword = keyword.trim();
+    if (!keyword) return [];
+
+    const base = keyword.charAt(0).toUpperCase() + keyword.slice(1).toLowerCase();
+    const namesSet = new Set();
+
+    // Add the base name itself
+    namesSet.add(base);
+
+    // Combine base with prefixes and suffixes with connectors
+    for (let prefix of prefixes) {
+      for (let connector of connectors) {
+        namesSet.add(prefix + connector + base);
+        namesSet.add(base + connector + prefix);
+      }
+    }
+    for (let suffix of suffixes) {
+      for (let connector of connectors) {
+        namesSet.add(base + connector + suffix);
+        namesSet.add(suffix + connector + base);
+      }
+    }
+
+    // Combine prefixes and suffixes with base in many patterns
+    for (let prefix of prefixes) {
+      for (let suffix of suffixes) {
+        namesSet.add(prefix + base + suffix);
+        namesSet.add(suffix + base + prefix);
+        namesSet.add(prefix + '-' + base + '-' + suffix);
+      }
+    }
+
+    // Numbers appended 1 to 20 for variety
+    for (let i = 1; i <= 20; i++) {
+      namesSet.add(base + i);
+      for (let prefix of prefixes) {
+        namesSet.add(prefix + base + i);
+      }
+      for (let suffix of suffixes) {
+        namesSet.add(base + suffix + i);
+      }
+    }
+
+    // Add repeated base variations
+    namesSet.add(base + base);
+    namesSet.add(base + '-' + base);
+
+    // Return first 150 unique names
+    return Array.from(namesSet).slice(0, 150);
+  }
+
+  // Clear suggestions list
+  function clearSuggestions() {
+    suggestionsList.innerHTML = '';
+  }
+
+  // Copy text to clipboard with alert feedback
+  function copyText(text) {
+    if (!navigator.clipboard) {
+      alert('Clipboard API not supported in your browser.');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      alert(`Copied "${text}" to clipboard!`);
+    }).catch(() => {
+      alert('Failed to copy to clipboard.');
+    });
+  }
+
+  // Display generated names in suggestion list
+  function showNames(names) {
+    clearSuggestions();
+    if (names.length === 0) {
+      suggestionsList.innerHTML = '<li>Please enter a keyword to generate names.</li>';
+      return;
+    }
+    names.forEach(name => {
+      const li = document.createElement('li');
+      li.textContent = name;
+      li.title = 'Click to copy';
+      li.tabIndex = 0;
+      li.addEventListener('click', () => copyText(name));
+      li.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          copyText(name);
+        }
+      });
+      suggestionsList.appendChild(li);
+    });
+  }
+
+  // Event Listeners
+  generateBtn.addEventListener('click', () => {
+    const keyword = keywordInput.value;
+    const names = generateNames(keyword);
+    showNames(names);
+  });
+
+  keywordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      generateBtn.click();
+    }
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
